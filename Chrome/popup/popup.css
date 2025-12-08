@@ -1,0 +1,326 @@
+/* Page Timer - Popup Styles */
+
+:root {
+  --primary-color: #6227b0;
+  --primary-dark: #511fa2;
+  --primary-light: #c7bee7;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --background: #fafafa;
+  --surface: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  background: var(--background);
+  color: var(--text-primary);
+  min-width: 400px;
+  max-width: 450px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-dark)
+  );
+  color: white;
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* URL Bar */
+.url-bar {
+  background: var(--surface);
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.url-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Info Text */
+.info-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 8px 20px;
+  background: var(--primary-light);
+  text-align: center;
+}
+
+/* Table Container */
+.table-container {
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.metrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.metrics-table thead {
+  background: #f5f5f5;
+}
+
+.metrics-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.metrics-table th:not(:first-child) {
+  text-align: right;
+}
+
+.metrics-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.metrics-table td:not(:first-child) {
+  text-align: right;
+  font-family: "Consolas", "Monaco", monospace;
+}
+
+.metrics-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.metrics-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Duration bar visualization */
+.duration-cell {
+  position: relative;
+}
+
+.duration-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  background: var(--primary-light);
+  opacity: 0.5;
+  border-radius: 2px;
+  z-index: 0;
+}
+
+.duration-value {
+  position: relative;
+  z-index: 1;
+}
+
+/* Event name styling */
+.event-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Total Row */
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-dark)
+  );
+  color: white;
+  font-weight: 600;
+}
+
+.total-label {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.total-value {
+  font-size: 22px;
+  font-family: "Consolas", "Monaco", monospace;
+}
+
+/* No Data State */
+.no-data {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.no-data svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-data p {
+  margin-bottom: 8px;
+}
+
+.no-data .hint {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-color);
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-size: 11px;
+  min-width: 80px;
+}
+
+.action-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.action-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metrics-table tbody tr {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.metrics-table tbody tr:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.metrics-table tbody tr:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.metrics-table tbody tr:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.metrics-table tbody tr:nth-child(4) {
+  animation-delay: 0.08s;
+}
+.metrics-table tbody tr:nth-child(5) {
+  animation-delay: 0.1s;
+}
+.metrics-table tbody tr:nth-child(6) {
+  animation-delay: 0.12s;
+}
+.metrics-table tbody tr:nth-child(7) {
+  animation-delay: 0.14s;
+}
+.metrics-table tbody tr:nth-child(8) {
+  animation-delay: 0.16s;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-secondary);
+}
+
+.loading::after {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--primary-light);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
