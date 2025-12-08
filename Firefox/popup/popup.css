@@ -100,7 +100,7 @@ body {
 .metrics-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .metrics-table thead {
@@ -184,13 +184,13 @@ body {
 }
 
 .total-label {
-  font-size: 16px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .total-value {
-  font-size: 22px;
+  font-size: 16px;
   font-family: "Consolas", "Monaco", monospace;
 }
 
