@@ -5,6 +5,14 @@
   "description": "Mide el tiempo de carga de páginas web mostrando métricas detalladas de rendimiento",
   "permissions": ["tabs", "activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "pagetimer@yenreh.dev",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
