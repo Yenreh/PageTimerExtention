@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page Timer</title>
+    <title data-i18n="popupTitle">Page Timer</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
@@ -31,27 +31,36 @@
               stroke-linecap="round"
             />
           </svg>
-          <h1 class="title">Page Timer</h1>
+          <h1 class="title" data-i18n="headerTitle">Page Timer</h1>
         </div>
       </header>
 
       <!-- Current URL -->
       <div class="url-bar">
-        <span id="currentUrl" class="url-text">Cargando...</span>
+        <span id="currentUrl" class="url-text" data-i18n="urlLoading">Loading...</span>
+      </div>
+
+      <!-- Site Toggle -->
+      <div class="toggle-bar" id="toggleBar">
+        <span class="toggle-label" data-i18n="toggleLabel">Measure this page</span>
+        <label class="switch">
+          <input type="checkbox" id="enableToggle" />
+          <span class="slider"></span>
+        </label>
       </div>
 
       <!-- Info text -->
-      <p class="info-text">Todos los tiempos están en milisegundos</p>
+      <p class="info-text" data-i18n="infoText">All times are in milliseconds</p>
 
       <!-- Metrics Table -->
       <div class="table-container">
         <table class="metrics-table">
           <thead>
             <tr>
-              <th>Evento</th>
-              <th>Inicio</th>
-              <th>Duración</th>
-              <th>Fin</th>
+              <th data-i18n="colEvent">Event</th>
+              <th data-i18n="colStart">Start</th>
+              <th data-i18n="colDuration">Duration</th>
+              <th data-i18n="colEnd">End</th>
             </tr>
           </thead>
           <tbody id="metricsBody">
@@ -62,7 +71,7 @@
 
       <!-- Total Row -->
       <div class="total-row" id="totalRow">
-        <span class="total-label">Total</span>
+        <span class="total-label" data-i18n="totalLabel">Total</span>
         <span class="total-value" id="totalValue">--</span>
       </div>
 
@@ -84,13 +93,13 @@
           />
           <circle cx="12" cy="16" r="1" fill="currentColor" />
         </svg>
-        <p>No hay datos de métricas disponibles.</p>
-        <p class="hint">Navega a una página para ver sus tiempos de carga.</p>
+        <p data-i18n="noDataTitle">No metrics data available.</p>
+        <p class="hint" data-i18n="noDataHint">Navigate to a page to see its load times.</p>
       </div>
 
       <!-- Action Buttons -->
       <div class="actions">
-        <button class="action-btn" id="downloadBtn" title="Descargar datos">
+        <button class="action-btn" id="downloadBtn" title="Download data" data-i18n-title="btnDownloadTitle">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -118,9 +127,9 @@
               stroke-linejoin="round"
             />
           </svg>
-          <span>Descargar</span>
+          <span data-i18n="btnDownload">Download</span>
         </button>
-        <button class="action-btn" id="clearBtn" title="Limpiar datos">
+        <button class="action-btn" id="clearBtn" title="Clear data" data-i18n-title="btnClearTitle">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -141,9 +150,9 @@
               stroke-linejoin="round"
             />
           </svg>
-          <span>Limpiar</span>
+          <span data-i18n="btnClear">Clear</span>
         </button>
-        <button class="action-btn" id="refreshBtn" title="Actualizar métricas">
+        <button class="action-btn" id="refreshBtn" title="Refresh metrics" data-i18n-title="btnRefreshTitle">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -171,7 +180,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <span>Actualizar</span>
+          <span data-i18n="btnRefresh">Refresh</span>
         </button>
       </div>
     </div>

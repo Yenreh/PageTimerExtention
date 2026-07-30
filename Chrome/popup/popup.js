@@ -10,9 +10,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   const downloadBtn = document.getElementById('downloadBtn');
   const clearBtn = document.getElementById('clearBtn');
   const refreshBtn = document.getElementById('refreshBtn');
+  const enableToggle = document.getElementById('enableToggle');
+  const toggleBar = document.getElementById('toggleBar');
 
   let currentMetrics = null;
   let currentTabId = null;
+  let currentOrigin = null;
+
+  // Traducir la interfaz según el idioma del navegador
+  function applyTranslations() {
+    document.title = chrome.i18n.getMessage('popupTitle');
+    document.documentElement.lang = chrome.i18n.getUILanguage();
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const message = chrome.i18n.getMessage(el.getAttribute('data-i18n'));
+      if (message) el.textContent = message;
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+      const message = chrome.i18n.getMessage(el.getAttribute('data-i18n-title'));
+      if (message) el.title = message;
+    });
+  }
+
+  applyTranslations();
 
   // Obtener la pestaña activa
   async function getCurrentTab() {
@@ -20,15 +41,47 @@ document.addEventListener('DOMContentLoaded', async () => {
     return tab;
   }
 
+  // Extraer el origen (protocolo + host) de una URL, o null si no aplica
+  function getOrigin(url) {
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+      return parsed.origin;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Cargar y reflejar el estado de activación del sitio actual
+  async function loadSiteState() {
+    if (!currentOrigin) {
+      enableToggle.checked = false;
+      enableToggle.disabled = true;
+      toggleBar.title = chrome.i18n.getMessage('toggleUnavailable');
+      return;
+    }
+
+    toggleBar.title = '';
+    const response = await chrome.runtime.sendMessage({
+      type: 'GET_SITE_STATE',
+      origin: currentOrigin
+    });
+    enableToggle.disabled = false;
+    enableToggle.checked = !!(response && response.enabled);
+  }
+
   // Cargar métricas
   async function loadMetrics() {
     try {
       const tab = await getCurrentTab();
       currentTabId = tab.id;
-      
+      currentOrigin = getOrigin(tab.url);
+
       // Mostrar URL actual
       currentUrl.textContent = tab.url;
       currentUrl.title = tab.url;
+
+      await loadSiteState();
 
       // Intentar obtener métricas del storage
       const key = `metrics_${tab.id}`;
@@ -42,7 +95,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         showNoData();
       }
     } catch (error) {
-      console.error('Error loading metrics:', error);
       showNoData();
     }
   }
@@ -59,10 +111,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     metrics.events.forEach(event => {
       const row = document.createElement('tr');
-      
+
       // Calcular el ancho de la barra de duración
       const barWidth = maxDuration > 0 ? (event.duration / maxDuration) * 100 : 0;
-      
+
       row.innerHTML = `
         <td><span class="event-name">${event.name}</span></td>
         <td>${formatNumber(event.start)}</td>
@@ -72,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </td>
         <td>${formatNumber(event.end)}</td>
       `;
-      
+
       metricsBody.appendChild(row);
     });
 
@@ -99,14 +151,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Descargar datos como JSON
   function downloadData() {
     if (!currentMetrics) {
-      alert('No hay datos para descargar');
+      alert(chrome.i18n.getMessage('alertNoData'));
       return;
     }
 
     const dataStr = JSON.stringify(currentMetrics, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    
+
     const a = document.createElement('a');
     a.href = url;
     a.download = `page-timer-${new Date().toISOString().slice(0, 10)}.json`;
@@ -119,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Limpiar datos
   async function clearData() {
     if (!currentTabId) return;
-    
+
     try {
       await chrome.runtime.sendMessage({
         type: 'CLEAR_METRICS',
@@ -127,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       showNoData();
     } catch (error) {
-      console.error('Error clearing metrics:', error);
+      // Ignorar
     }
   }
 
@@ -142,10 +194,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Activar/desactivar la medición en el sitio actual
+  async function toggleSite() {
+    if (!currentOrigin || !currentTabId) return;
+
+    const enabled = enableToggle.checked;
+    enableToggle.disabled = true;
+
+    try {
+      await chrome.runtime.sendMessage({
+        type: 'TOGGLE_SITE',
+        origin: currentOrigin,
+        tabId: currentTabId,
+        enabled
+      });
+
+      if (enabled) {
+        // Dar tiempo a que el content script recién inyectado envíe las métricas
+        setTimeout(loadMetrics, 600);
+      } else {
+        showNoData();
+      }
+    } finally {
+      enableToggle.disabled = false;
+    }
+  }
+
   // Event listeners
   downloadBtn.addEventListener('click', downloadData);
   clearBtn.addEventListener('click', clearData);
   refreshBtn.addEventListener('click', refreshData);
+  enableToggle.addEventListener('change', toggleSite);
 
   // Cargar métricas al abrir el popup
   loadMetrics();

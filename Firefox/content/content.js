@@ -148,28 +148,18 @@
 
   function sendMetrics() {
     const metrics = getPerformanceMetrics();
-    
-    console.log('Page Timer - Collected metrics:', metrics);
-    
+
     // Verificar que tenemos datos válidos
     if (metrics.total && metrics.total > 0 && metrics.events.length > 0) {
       try {
         chrome.runtime.sendMessage({
           type: 'PERFORMANCE_METRICS',
           data: metrics
-        }, (response) => {
-          if (chrome.runtime.lastError) {
-            console.debug('Page Timer: Could not send metrics', chrome.runtime.lastError);
-          } else {
-            console.log('Page Timer - Metrics sent successfully', response);
-          }
         });
       } catch (e) {
         // Extensión no disponible, ignorar
-        console.debug('Page Timer: Could not send metrics', e);
       }
     } else {
-      console.log('Page Timer - Metrics not ready, waiting...');
       // Si no tenemos métricas completas, reintentar
       setTimeout(sendMetrics, 500);
     }
