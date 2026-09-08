@@ -1,8 +1,8 @@
 /* Page Timer - Popup Styles */
 
 :root {
-  --primary-color: #6227b0;
-  --primary-dark: #511fa2;
+  --primary-color: #512092;
+  --primary-dark: #401980;
   --primary-light: #c7bee7;
   --success-color: #4caf50;
   --warning-color: #ff9800;
@@ -11,8 +11,13 @@
   --text-secondary: #757575;
   --background: #fafafa;
   --surface: #ffffff;
+  --surface-alt: #f5f5f5;
+  --surface-hover: #f0edf7;
   --border-color: #e0e0e0;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --primary-shadow: rgba(81, 32, 146, 0.3);
+  --scrollbar-thumb: rgba(81, 32, 146, 0.25);
+  --scrollbar-thumb-hover: rgba(81, 32, 146, 0.45);
 }
 
 * {
@@ -22,18 +27,31 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 13px;
   background: var(--background);
   color: var(--text-primary);
-  min-width: 400px;
-  max-width: 450px;
+  width: 400px;
+  overflow: hidden;
 }
 
+/* Solo la tabla hace scroll, nunca el popup completo */
 .container {
   display: flex;
   flex-direction: column;
   gap: 0;
+  max-height: 580px;
+  overflow: hidden;
+}
+
+.header,
+.url-bar,
+.toggle-bar,
+.info-text,
+.total-row,
+.actions,
+.footer {
+  flex-shrink: 0;
 }
 
 /* Header */
@@ -68,7 +86,7 @@ body {
 /* URL Bar */
 .url-bar {
   background: var(--surface);
-  padding: 10px 20px;
+  padding: 8px 20px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -157,7 +175,36 @@ body {
 /* Table Container */
 .table-container {
   background: var(--surface);
-  overflow: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+.metrics-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface-alt);
 }
 
 .metrics-table {
@@ -167,11 +214,11 @@ body {
 }
 
 .metrics-table thead {
-  background: #f5f5f5;
+  background: var(--surface-alt);
 }
 
 .metrics-table th {
-  padding: 10px 12px;
+  padding: 7px 12px;
   text-align: left;
   font-weight: 600;
   color: var(--text-secondary);
@@ -186,7 +233,7 @@ body {
 }
 
 .metrics-table td {
-  padding: 10px 12px;
+  padding: 7px 12px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -196,7 +243,7 @@ body {
 }
 
 .metrics-table tbody tr:hover {
-  background: #f8f9fa;
+  background: var(--surface-hover);
 }
 
 .metrics-table tbody tr:last-child td {
@@ -214,7 +261,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   height: 20px;
-  background: var(--primary-light);
+  background: var(--primary-color);
   opacity: 0.5;
   border-radius: 2px;
   z-index: 0;
@@ -236,7 +283,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 12px 20px;
   background: linear-gradient(
     135deg,
     var(--primary-color),
@@ -259,6 +306,7 @@ body {
 
 /* No Data State */
 .no-data {
+  flex: 1 1 auto;
   padding: 40px 20px;
   text-align: center;
   color: var(--text-secondary);
@@ -285,7 +333,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 8px;
-  padding: 16px 20px;
+  padding: 8px 20px 6px;
   background: var(--surface);
   border-top: 1px solid var(--border-color);
 }
@@ -388,12 +436,42 @@ body {
   }
 }
 
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 12px 6px;
+  background: var(--surface);
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.footer-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+.footer-link:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-color: #9166d9;
-    --primary-dark: #7a4fc4;
-    --primary-light: #3a2f52;
+    --primary-color: #7c4dcc;
+    --primary-dark: #512092;
+    --primary-light: #33294d;
     --success-color: #66bb6a;
     --warning-color: #ffa726;
     --danger-color: #ef5350;
@@ -401,16 +479,13 @@ body {
     --text-secondary: #a8a8a8;
     --background: #1e1e1e;
     --surface: #2a2a2a;
+    --surface-alt: #232323;
+    --surface-hover: #333333;
     --border-color: #3d3d3d;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  }
-
-  .metrics-table thead {
-    background: #232323;
-  }
-
-  .metrics-table tbody tr:hover {
-    background: #333333;
+    --primary-shadow: rgba(124, 77, 204, 0.3);
+    --scrollbar-thumb: rgba(216, 204, 245, 0.22);
+    --scrollbar-thumb-hover: rgba(216, 204, 245, 0.4);
   }
 
   .switch .slider::before {
