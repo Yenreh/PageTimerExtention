@@ -1,6 +1,36 @@
 // Page Timer - Popup Script
 // Renderiza las métricas de rendimiento en la UI
 
+// Patron de coincidencia del origen para los permisos opcionales
+function originPattern(origin) {
+  return `${origin}/*`;
+}
+
+// El acceso a cada sitio se concede por separado al activar el interruptor
+async function hasSitePermission(origin) {
+  try {
+    return await chrome.permissions.contains({ origins: [originPattern(origin)] });
+  } catch (e) {
+    return false;
+  }
+}
+
+async function requestSitePermission(origin) {
+  try {
+    return await chrome.permissions.request({ origins: [originPattern(origin)] });
+  } catch (e) {
+    return false;
+  }
+}
+
+async function removeSitePermission(origin) {
+  try {
+    await chrome.permissions.remove({ origins: [originPattern(origin)] });
+  } catch (e) {
+    // El permiso ya no estaba concedido
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const metricsBody = document.getElementById('metricsBody');
   const totalValue = document.getElementById('totalValue');
@@ -12,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const refreshBtn = document.getElementById('refreshBtn');
   const enableToggle = document.getElementById('enableToggle');
   const toggleBar = document.getElementById('toggleBar');
+  const infoText = document.querySelector('.info-text');
 
   let currentMetrics = null;
   let currentTabId = null;
@@ -34,6 +65,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   applyTranslations();
+
+  // Avisar en la franja informativa cuando se rechaza el acceso al sitio
+  let infoTextTimer = null;
+  function resetInfoText() {
+    clearTimeout(infoTextTimer);
+    infoText.textContent = chrome.i18n.getMessage('infoText');
+  }
+
+  function showPermissionDenied() {
+    infoText.textContent = chrome.i18n.getMessage('permissionDenied');
+    clearTimeout(infoTextTimer);
+    infoTextTimer = setTimeout(resetInfoText, 2500);
+  }
 
   // Obtener la pestaña activa
   async function getCurrentTab() {
@@ -66,8 +110,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       type: 'GET_SITE_STATE',
       origin: currentOrigin
     });
+
+    let enabled = !!(response && response.enabled);
+
+    // El acceso al sitio pudo revocarse desde el navegador
+    if (enabled && !(await hasSitePermission(currentOrigin))) {
+      enabled = false;
+      await chrome.runtime.sendMessage({
+        type: 'TOGGLE_SITE',
+        origin: currentOrigin,
+        tabId: currentTabId,
+        enabled: false
+      });
+    }
+
     enableToggle.disabled = false;
-    enableToggle.checked = !!(response && response.enabled);
+    enableToggle.checked = enabled;
   }
 
   // Cargar métricas
@@ -216,6 +274,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!currentOrigin || !currentTabId) return;
 
     const enabled = enableToggle.checked;
+
+    // Pedir el acceso al sitio es lo primero, para no perder el gesto del usuario
+    if (enabled && !(await requestSitePermission(currentOrigin))) {
+      enableToggle.checked = false;
+      showPermissionDenied();
+      return;
+    }
+
+    resetInfoText();
     enableToggle.disabled = true;
 
     try {
@@ -230,6 +297,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Dar tiempo a que el content script recién inyectado envíe las métricas
         setTimeout(loadMetrics, 600);
       } else {
+        await removeSitePermission(currentOrigin);
         showNoData();
       }
     } finally {

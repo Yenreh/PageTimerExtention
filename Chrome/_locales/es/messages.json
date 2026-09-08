@@ -1,24 +1,71 @@
 {
-  "extName": { "message": "Page Timer" },
-  "extDescription": { "message": "Mide el tiempo de carga de páginas web mostrando métricas detalladas de rendimiento" },
-  "popupTitle": { "message": "Page Timer" },
-  "headerTitle": { "message": "Page Timer" },
-  "urlLoading": { "message": "Cargando..." },
-  "toggleLabel": { "message": "Medir esta página" },
-  "toggleUnavailable": { "message": "No disponible en esta página" },
-  "infoText": { "message": "Todos los tiempos están en milisegundos" },
-  "colEvent": { "message": "Evento" },
-  "colStart": { "message": "Inicio" },
-  "colDuration": { "message": "Duración" },
-  "colEnd": { "message": "Fin" },
-  "totalLabel": { "message": "Total" },
-  "noDataTitle": { "message": "No hay datos de métricas disponibles." },
-  "noDataHint": { "message": "Navega a una página para ver sus tiempos de carga." },
-  "btnDownload": { "message": "Descargar" },
-  "btnDownloadTitle": { "message": "Descargar datos" },
-  "btnClear": { "message": "Limpiar" },
-  "btnClearTitle": { "message": "Limpiar datos" },
-  "btnRefresh": { "message": "Actualizar" },
-  "btnRefreshTitle": { "message": "Actualizar métricas" },
-  "alertNoData": { "message": "No hay datos para descargar" }
+  "extName": {
+    "message": "Page Timer"
+  },
+  "extDescription": {
+    "message": "Mide el tiempo de carga de páginas web mostrando métricas detalladas de rendimiento"
+  },
+  "popupTitle": {
+    "message": "Page Timer"
+  },
+  "headerTitle": {
+    "message": "Page Timer"
+  },
+  "urlLoading": {
+    "message": "Cargando..."
+  },
+  "toggleLabel": {
+    "message": "Medir esta página"
+  },
+  "toggleUnavailable": {
+    "message": "No disponible en esta página"
+  },
+  "infoText": {
+    "message": "Todos los tiempos están en milisegundos"
+  },
+  "colEvent": {
+    "message": "Evento"
+  },
+  "colStart": {
+    "message": "Inicio"
+  },
+  "colDuration": {
+    "message": "Duración"
+  },
+  "colEnd": {
+    "message": "Fin"
+  },
+  "totalLabel": {
+    "message": "Total"
+  },
+  "noDataTitle": {
+    "message": "No hay datos de métricas disponibles."
+  },
+  "noDataHint": {
+    "message": "Navega a una página para ver sus tiempos de carga."
+  },
+  "btnDownload": {
+    "message": "Descargar"
+  },
+  "btnDownloadTitle": {
+    "message": "Descargar datos"
+  },
+  "btnClear": {
+    "message": "Limpiar"
+  },
+  "btnClearTitle": {
+    "message": "Limpiar datos"
+  },
+  "btnRefresh": {
+    "message": "Actualizar"
+  },
+  "btnRefreshTitle": {
+    "message": "Actualizar métricas"
+  },
+  "alertNoData": {
+    "message": "No hay datos para descargar"
+  },
+  "permissionDenied": {
+    "message": "No se concedió el acceso a este sitio"
+  }
 }

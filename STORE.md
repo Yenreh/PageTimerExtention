@@ -41,10 +41,12 @@ opened.
 Inject the content script that reads the page's Navigation Timing API. It is
 injected only into origins the user has enabled with the toggle in the popup.
 
-**Host permission (<all_urls>)**
-The user decides which sites to measure, so the hosts cannot be known in
-advance. Despite the broad declaration, the content script runs only on the
-origins the user enabled with the toggle; no other site is accessed.
+**Optional host permission (<all_urls>)**
+Declared as an optional permission, so it is not granted at install time. When
+the user turns on the toggle for a site, the extension requests access to that
+single origin with chrome.permissions.request and the browser shows its own
+confirmation dialog. Turning the toggle off revokes it. The user decides which
+sites to enable, so the list of hosts cannot be known in advance.
 
 **storage**
 Store locally which origins the user enabled and the last metrics of each tab.

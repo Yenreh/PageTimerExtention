@@ -18,6 +18,15 @@ async function isSiteEnabled(origin) {
   return !!enabledOrigins[origin];
 }
 
+// El acceso a cada sitio se concede por separado desde el popup
+async function hasSitePermission(origin) {
+  try {
+    return await chrome.permissions.contains({ origins: [`${origin}/*`] });
+  } catch (e) {
+    return false;
+  }
+}
+
 async function setSiteEnabled(origin, enabled) {
   const { enabledOrigins = {} } = await chrome.storage.local.get('enabledOrigins');
   if (enabled) {
@@ -144,8 +153,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
   if (changeInfo.status === 'complete' && tab.url) {
     const origin = getOrigin(tab.url);
-    if (origin && (await isSiteEnabled(origin))) {
+    if (origin && (await isSiteEnabled(origin)) && (await hasSitePermission(origin))) {
       injectContentScript(tabId);
     }
+  }
+});
+
+// Si el usuario revoca el acceso a un sitio desde el navegador, dejar de medirlo
+chrome.permissions.onRemoved.addListener(async ({ origins = [] }) => {
+  for (const pattern of origins) {
+    await setSiteEnabled(pattern.replace(/\/\*$/, ''), false);
   }
 });

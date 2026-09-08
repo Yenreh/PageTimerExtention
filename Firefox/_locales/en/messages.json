@@ -1,24 +1,71 @@
 {
-  "extName": { "message": "Page Timer" },
-  "extDescription": { "message": "Measures webpage load time showing detailed performance metrics" },
-  "popupTitle": { "message": "Page Timer" },
-  "headerTitle": { "message": "Page Timer" },
-  "urlLoading": { "message": "Loading..." },
-  "toggleLabel": { "message": "Measure this page" },
-  "toggleUnavailable": { "message": "Not available on this page" },
-  "infoText": { "message": "All times are in milliseconds" },
-  "colEvent": { "message": "Event" },
-  "colStart": { "message": "Start" },
-  "colDuration": { "message": "Duration" },
-  "colEnd": { "message": "End" },
-  "totalLabel": { "message": "Total" },
-  "noDataTitle": { "message": "No metrics data available." },
-  "noDataHint": { "message": "Navigate to a page to see its load times." },
-  "btnDownload": { "message": "Download" },
-  "btnDownloadTitle": { "message": "Download data" },
-  "btnClear": { "message": "Clear" },
-  "btnClearTitle": { "message": "Clear data" },
-  "btnRefresh": { "message": "Refresh" },
-  "btnRefreshTitle": { "message": "Refresh metrics" },
-  "alertNoData": { "message": "No data to download" }
+  "extName": {
+    "message": "Page Timer"
+  },
+  "extDescription": {
+    "message": "Measures webpage load time showing detailed performance metrics"
+  },
+  "popupTitle": {
+    "message": "Page Timer"
+  },
+  "headerTitle": {
+    "message": "Page Timer"
+  },
+  "urlLoading": {
+    "message": "Loading..."
+  },
+  "toggleLabel": {
+    "message": "Measure this page"
+  },
+  "toggleUnavailable": {
+    "message": "Not available on this page"
+  },
+  "infoText": {
+    "message": "All times are in milliseconds"
+  },
+  "colEvent": {
+    "message": "Event"
+  },
+  "colStart": {
+    "message": "Start"
+  },
+  "colDuration": {
+    "message": "Duration"
+  },
+  "colEnd": {
+    "message": "End"
+  },
+  "totalLabel": {
+    "message": "Total"
+  },
+  "noDataTitle": {
+    "message": "No metrics data available."
+  },
+  "noDataHint": {
+    "message": "Navigate to a page to see its load times."
+  },
+  "btnDownload": {
+    "message": "Download"
+  },
+  "btnDownloadTitle": {
+    "message": "Download data"
+  },
+  "btnClear": {
+    "message": "Clear"
+  },
+  "btnClearTitle": {
+    "message": "Clear data"
+  },
+  "btnRefresh": {
+    "message": "Refresh"
+  },
+  "btnRefreshTitle": {
+    "message": "Refresh metrics"
+  },
+  "alertNoData": {
+    "message": "No data to download"
+  },
+  "permissionDenied": {
+    "message": "Access to this site was not granted"
+  }
 }
