@@ -99,9 +99,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Crear una celda con un elemento hijo
+  function createCell(child, className) {
+    const cell = document.createElement('td');
+    if (className) cell.className = className;
+    cell.appendChild(child);
+    return cell;
+  }
+
+  // Crear un elemento con clase y texto
+  function createElement(tag, className, text) {
+    const element = document.createElement(tag);
+    element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
   // Renderizar métricas en la tabla
   function renderMetrics(metrics) {
-    metricsBody.innerHTML = '';
+    metricsBody.replaceChildren();
     noData.style.display = 'none';
     document.querySelector('.table-container').style.display = 'block';
     totalRow.style.display = 'flex';
@@ -115,15 +131,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Calcular el ancho de la barra de duración
       const barWidth = maxDuration > 0 ? (event.duration / maxDuration) * 100 : 0;
 
-      row.innerHTML = `
-        <td><span class="event-name">${event.name}</span></td>
-        <td>${formatNumber(event.start)}</td>
-        <td class="duration-cell">
-          <div class="duration-bar" style="width: ${barWidth}%"></div>
-          <span class="duration-value">${formatNumber(event.duration)}</span>
-        </td>
-        <td>${formatNumber(event.end)}</td>
-      `;
+      const bar = createElement('div', 'duration-bar');
+      bar.style.width = `${barWidth}%`;
+
+      const durationCell = createCell(bar, 'duration-cell');
+      durationCell.appendChild(createElement('span', 'duration-value', formatNumber(event.duration)));
+
+      row.appendChild(createCell(createElement('span', 'event-name', event.name)));
+      row.appendChild(createCell(document.createTextNode(formatNumber(event.start))));
+      row.appendChild(durationCell);
+      row.appendChild(createCell(document.createTextNode(formatNumber(event.end))));
 
       metricsBody.appendChild(row);
     });
