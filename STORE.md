@@ -12,10 +12,10 @@ Page Timer measures how long a web page takes to load and shows the individual
 phases of the load, so you can see where the time actually goes:
 
 - Request, Response, DOM, Parse, Execute Scripts, Content loaded, Sub Resources and Load event
-- Duration bars to compare phases at a glance, plus the total in the badge
+- Waterfall bars that show when each phase starts and how long it takes, plus the total in the badge
 - Per-site switch: the extension only measures the origins you explicitly enable
 - Download the metrics as JSON
-- English and Spanish interface, light and dark mode
+- English and Spanish interface, light, dark or automatic theme
 
 The extension does not collect, store or transmit any personal data. Everything
 stays in your browser.
