@@ -1,0 +1,14 @@
+{
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "pagetimer@yenreh.dev",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "background": {
+    "service_worker": null,
+    "scripts": ["background/service-worker.js"]
+  }
+}

@@ -67,5 +67,17 @@
   },
   "permissionDenied": {
     "message": "Access to this site was not granted"
+  },
+  "themeAuto": {
+    "message": "Auto"
+  },
+  "themeLight": {
+    "message": "Light"
+  },
+  "themeDark": {
+    "message": "Dark"
+  },
+  "themeTitle": {
+    "message": "Theme: auto follows the browser. Click to switch between auto, light and dark"
   }
 }

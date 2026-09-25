@@ -4,36 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title data-i18n="popupTitle">Page Timer</title>
+    <link rel="stylesheet" href="base.css" />
     <link rel="stylesheet" href="popup.css" />
+    <script src="common.js"></script>
   </head>
   <body>
     <div class="container">
       <!-- Header -->
       <header class="header">
-        <div class="header-content">
-          <svg
-            class="logo"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-            <path
-              d="M12 6V12L16 14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-          <h1 class="title" data-i18n="headerTitle">Page Timer</h1>
+        <svg
+          class="logo"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M12 6V12L16 14"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        <h1 class="title" data-i18n="headerTitle">Page Timer</h1>
+        <div class="header-meta">
+          <span class="chip" id="versionChip"></span>
+          <button class="chip" id="themeBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+              <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
+            </svg>
+            <span id="themeLabel">Auto</span>
+          </button>
         </div>
       </header>
+
+      <!-- Info text -->
+      <p class="info-text" data-i18n="infoText">All times are in milliseconds</p>
 
       <!-- Current URL -->
       <div class="url-bar">
@@ -48,9 +61,6 @@
           <span class="slider"></span>
         </label>
       </div>
-
-      <!-- Info text -->
-      <p class="info-text" data-i18n="infoText">All times are in milliseconds</p>
 
       <!-- Metrics Table -->
       <div class="table-container">
@@ -129,7 +139,7 @@
           </svg>
           <span data-i18n="btnDownload">Download</span>
         </button>
-        <button class="action-btn" id="clearBtn" title="Clear data" data-i18n-title="btnClearTitle">
+        <button class="action-btn danger" id="clearBtn" title="Clear data" data-i18n-title="btnClearTitle">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -152,7 +162,7 @@
           </svg>
           <span data-i18n="btnClear">Clear</span>
         </button>
-        <button class="action-btn" id="refreshBtn" title="Refresh metrics" data-i18n-title="btnRefreshTitle">
+        <button class="action-btn primary" id="refreshBtn" title="Refresh metrics" data-i18n-title="btnRefreshTitle">
           <svg
             viewBox="0 0 24 24"
             fill="none"

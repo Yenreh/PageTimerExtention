@@ -1,0 +1,132 @@
+/* Page Timer - Popup layout (tokens and shared parts in base.css) */
+
+/* Only the table scrolls, never the whole popup */
+.container {
+  max-height: 580px;
+  overflow: hidden;
+}
+
+.container > :not(.table-container) {
+  flex-shrink: 0;
+}
+
+.toggle-label {
+  font-size: 13px;
+}
+
+/* Metrics table */
+.table-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.metrics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.metrics-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 12px 6px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink);
+  color: var(--muted);
+  font: 600 10.5px var(--sans);
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  white-space: nowrap;
+}
+
+.metrics-table td {
+  padding: 6px 12px;
+  border-bottom: 1px dashed var(--rule-soft);
+  font-family: var(--mono);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.metrics-table th:first-child,
+.metrics-table td:first-child {
+  padding-left: 18px;
+  text-align: left;
+}
+
+.metrics-table th:last-child,
+.metrics-table td:last-child {
+  padding-right: 18px;
+}
+
+.metrics-table tbody tr:hover td {
+  background-color: var(--paper-2);
+}
+
+.metrics-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.event-name {
+  font: 13px var(--sans);
+}
+
+/* Waterfall: a quarter grid of the page load, each bar placed at its start time */
+.duration-cell {
+  position: relative;
+  width: 36%;
+  background-image: linear-gradient(to right, var(--rule-soft) 1px, transparent 1px);
+  background-size: 25% 100%;
+}
+
+.duration-bar {
+  position: absolute;
+  bottom: 3px;
+  height: 4px;
+  min-width: 2px;
+  background: var(--accent);
+}
+
+.duration-value {
+  position: relative;
+}
+
+/* Total */
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 18px 12px;
+  border-top: 2px solid var(--ink);
+}
+
+.total-label {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.total-value {
+  font: 500 26px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.total-value::after {
+  content: " ms";
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Firefox keeps the smaller table text its separate stylesheet used before */
+@supports (-moz-appearance: none) {
+  .metrics-table {
+    font-size: 11px;
+  }
+}

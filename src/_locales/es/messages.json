@@ -67,5 +67,17 @@
   },
   "permissionDenied": {
     "message": "No se concedió el acceso a este sitio"
+  },
+  "themeAuto": {
+    "message": "Auto"
+  },
+  "themeLight": {
+    "message": "Claro"
+  },
+  "themeDark": {
+    "message": "Oscuro"
+  },
+  "themeTitle": {
+    "message": "Tema: auto sigue al navegador. Haz clic para alternar entre auto, claro y oscuro"
   }
 }

@@ -1,5 +1,6 @@
 // Page Timer - Popup Script
 // Renderiza las métricas de rendimiento en la UI
+// Shared helpers (t, getCurrentTab, getOrigin, showStatus) live in common.js
 
 // Patron de coincidencia del origen para los permisos opcionales
 function originPattern(origin) {
@@ -42,66 +43,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const refreshBtn = document.getElementById('refreshBtn');
   const enableToggle = document.getElementById('enableToggle');
   const toggleBar = document.getElementById('toggleBar');
-  const infoText = document.querySelector('.info-text');
 
   let currentMetrics = null;
   let currentTabId = null;
   let currentOrigin = null;
-
-  // Traducir la interfaz según el idioma del navegador
-  function applyTranslations() {
-    document.title = chrome.i18n.getMessage('popupTitle');
-    document.documentElement.lang = chrome.i18n.getUILanguage();
-
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
-      const message = chrome.i18n.getMessage(el.getAttribute('data-i18n'));
-      if (message) el.textContent = message;
-    });
-
-    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
-      const message = chrome.i18n.getMessage(el.getAttribute('data-i18n-title'));
-      if (message) el.title = message;
-    });
-  }
-
-  applyTranslations();
-
-  // Avisar en la franja informativa cuando se rechaza el acceso al sitio
-  let infoTextTimer = null;
-  function resetInfoText() {
-    clearTimeout(infoTextTimer);
-    infoText.textContent = chrome.i18n.getMessage('infoText');
-  }
-
-  function showPermissionDenied() {
-    infoText.textContent = chrome.i18n.getMessage('permissionDenied');
-    clearTimeout(infoTextTimer);
-    infoTextTimer = setTimeout(resetInfoText, 2500);
-  }
-
-  // Obtener la pestaña activa
-  async function getCurrentTab() {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    return tab;
-  }
-
-  // Extraer el origen (protocolo + host) de una URL, o null si no aplica
-  function getOrigin(url) {
-    try {
-      const parsed = new URL(url);
-      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
-      return parsed.origin;
-    } catch (e) {
-      return null;
-    }
-  }
 
   // Cargar y reflejar el estado de activación del sitio actual
   async function loadSiteState() {
     if (!currentOrigin) {
       enableToggle.checked = false;
       enableToggle.disabled = true;
-      toggleBar.title = chrome.i18n.getMessage('toggleUnavailable');
+      toggleBar.title = t('toggleUnavailable');
       return;
     }
 
@@ -180,17 +132,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('.table-container').style.display = 'block';
     totalRow.style.display = 'flex';
 
-    // Encontrar la duración máxima para escalar las barras
-    const maxDuration = Math.max(...metrics.events.map(e => e.duration));
+    // Waterfall scale: end of the last event
+    const span = Math.max(metrics.total || 0, ...metrics.events.map(e => e.end || 0));
 
     metrics.events.forEach(event => {
       const row = document.createElement('tr');
 
-      // Calcular el ancho de la barra de duración
-      const barWidth = maxDuration > 0 ? (event.duration / maxDuration) * 100 : 0;
-
+      // Each bar starts at its start time; both as % of the whole load
       const bar = createElement('div', 'duration-bar');
-      bar.style.width = `${barWidth}%`;
+      if (span > 0) {
+        bar.style.left = `${(event.start / span) * 100}%`;
+        bar.style.width = `${(event.duration / span) * 100}%`;
+      }
 
       const durationCell = createCell(bar, 'duration-cell');
       durationCell.appendChild(createElement('span', 'duration-value', formatNumber(event.duration)));
@@ -226,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Descargar datos como JSON
   function downloadData() {
     if (!currentMetrics) {
-      alert(chrome.i18n.getMessage('alertNoData'));
+      showStatus(t('alertNoData'), 'warning');
       return;
     }
 
@@ -278,11 +231,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Pedir el acceso al sitio es lo primero, para no perder el gesto del usuario
     if (enabled && !(await requestSitePermission(currentOrigin))) {
       enableToggle.checked = false;
-      showPermissionDenied();
+      showStatus(t('permissionDenied'), 'error');
       return;
     }
 
-    resetInfoText();
+    showStatus(t('infoText'));
     enableToggle.disabled = true;
 
     try {
